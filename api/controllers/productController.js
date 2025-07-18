@@ -10,7 +10,7 @@ const {
   PackageServiceItem,
   Brand,
   Category,
-  ProductImage, // <--- THÊM ProductImage vào đây
+  ProductImage,
 } = db;
 
 const { Op } = require("sequelize");

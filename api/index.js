@@ -12,9 +12,10 @@ const serviceRouter = require("./routes/service");
 const productRouter = require("./routes/product");
 
 const cors = require("cors");
+const morgan = require("morgan");
 
+app.use(morgan("dev"));
 app.use(express.json());
-
 app.use(cors());
 
 app.use("/", helloRouter);

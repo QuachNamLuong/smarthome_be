@@ -55,10 +55,10 @@ const handleLoginAttemp = async (req, res) => {
     });
     console.log("Login success!!");
   } catch (err) {
-    console.error("Lỗi đăng nhập:", error);
+    console.error("Lỗi đăng nhập:", err);
     res
       .status(500)
-      .json({ message: "Lỗi máy chủ nội bộ.", error: error.message });
+      .json({ message: "Lỗi máy chủ nội bộ.", error: err.message });
   }
 };
 

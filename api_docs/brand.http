@@ -1,0 +1,7 @@
+@port=8000
+POST http://localhost:{{port}}/api/brand
+Content-Type: application/json
+
+{
+    
+}
