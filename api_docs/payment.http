@@ -1,0 +1,2 @@
+POST http://localhost:8000/payment/create_payment_url
+Content-Type: application/json

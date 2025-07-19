@@ -10,6 +10,7 @@ const categoryRouter = require("./routes/category");
 const optionRouter = require("./routes/option");
 const serviceRouter = require("./routes/service");
 const productRouter = require("./routes/product");
+const paymentRouter = require("./routes/payment");
 
 const cors = require("cors");
 const morgan = require("morgan");
@@ -26,5 +27,6 @@ app.use("/category", categoryRouter);
 app.use("/option", optionRouter);
 app.use("/service-package", serviceRouter);
 app.use("/product", productRouter);
+app.use("/payment", paymentRouter);
 
 module.exports = app;
