@@ -1,2 +1,8 @@
 POST http://localhost:8000/payment/create_payment_url
 Content-Type: application/json
+
+{
+  "totalAmount": "30000",
+  "cartId": "quacnamluong_test_3",
+  "ipAddress": "127.0.0.1"
+}

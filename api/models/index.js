@@ -43,6 +43,14 @@ db.PackageServiceItem = require("./PackageServiceItem.js")(
 
 db.ProductImage = require("./ProductImage.js")(sequelize, Sequelize);
 
+//
+db.Order = require("./Order.js")(sequelize, Sequelize);
+db.OrderItem = require("./OrderItem.js")(sequelize, Sequelize);
+db.Cart = require("./Cart.js")(sequelize, Sequelize);
+db.CartItem = require("./CartItem.js")(sequelize, Sequelize);
+db.CartServiceItem = require("./CartServiceItem.js")(sequelize, Sequelize);
+db.OrderServiceItem = require("./OrderServiceItem.js")(sequelize, Sequelize);
+//
 db.Role.hasMany(db.User, {
   foreignKey: "role_id",
   as: "users",

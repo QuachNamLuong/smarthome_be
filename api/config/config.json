@@ -1,21 +1,21 @@
 {
   "development": {
     "username": "root",
-    "password": "my_password",
+    "password": "supersecretpassword",
     "database": "smarthome_db",
     "host": "localhost",
     "dialect": "mysql"
   },
   "test": {
     "username": "root",
-    "password": "my_password",
+    "password": "supersecretpassword",
     "database": "smarthome_db",
     "host": "localhost",
     "dialect": "mysql"
   },
   "production": {
     "username": "root",
-    "password": "my_password",
+    "password": "supersecretpassword",
     "database": "smarthome_db",
     "host": "localhost",
     "dialect": "mysql"

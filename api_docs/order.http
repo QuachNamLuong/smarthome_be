@@ -1,0 +1,9 @@
+POST http://localhost:8000/order
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "cartId": "1",
+  "shippingAddress": "asdasd",
+  "shippingPhone": "123124"
+}
