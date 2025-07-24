@@ -12,7 +12,7 @@ const getUserOrders = async (userId) => {
     if (!user) throw new AppError("User not found", 404);
 
     return await orderRepository.getUserOrders(userId);
-  } catch(err) {
+  } catch (err) {
     console.error(err);
 
     if (err instanceof AppError) throw err;
@@ -26,15 +26,15 @@ const getOrderDetail = async (orderId) => {
     if (!orderDetail) throw new AppError("Order not found", 404);
 
     return orderDetail;
-  } catch(err) {
+  } catch (err) {
     console.error(err);
 
     if (err instanceof AppError) throw err;
     throw new AppError("Can not get order detail", 500);
   }
-}
+};
 
-const createOrder = async (userId, cartId, shippingPhone, shippingAddress) => {
+const createOrder = async (cartId, shippingPhone, shippingAddress) => {
   let transaction;
   try {
     transaction = await db.sequelize.transaction();
@@ -52,7 +52,7 @@ const createOrder = async (userId, cartId, shippingPhone, shippingAddress) => {
     );
     const newOrder = await orderRepository.createOrder(
       {
-        user_id: userId,
+        user_id: cart.user_id,
         order_total: orderTotal,
         shipping_phone: shippingPhone,
         shipping_address: shippingAddress,
@@ -74,10 +74,27 @@ const createOrder = async (userId, cartId, shippingPhone, shippingAddress) => {
   }
 };
 
+const markOrderAsPaidByVnPay = async (orderId) => {
+  try {
+    const order = await orderRepository.getOrderById(orderId);
+    if (!order) throw new AppError("Order not found", 404);
+
+    await orderRepository.updateOrder(orderId, {
+      payment_method: "vnpay",
+      payment_status: "paid",
+    });
+  } catch (err) {
+    console.error(err);
+    if (err instanceof AppError) throw err;
+    throw new AppError("Can not paid", 500);
+  }
+};
+
 const orderService = {
   createOrder,
   getOrderDetail,
-  getUserOrders
+  getUserOrders,
+  markOrderAsPaidByVnPay,
 };
 
 module.exports = orderService;

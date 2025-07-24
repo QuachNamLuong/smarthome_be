@@ -1,14 +1,20 @@
-GET http://localhost:8000/order/3
+### get Order detail
+GET http://localhost:8000/order/test
 Content-Type: application/json
 
-# POST http://localhost:8000/order
-# Content-Type: application/json
+### GEt User Orders
+GET http://localhost:8000/order/user/1
+Content-Type: application/json
 
-# {
-#   "userId": "1",
-#   "cartId": "3",
-#   "shippingAddress": "asdasd",
-#   "shippingPhone": "123124"
-# }
+### Create Order
+POST http://localhost:8000/order
+Content-Type: application/json
+
+{
+  "userId": "1",
+  "cartId": "3",
+  "shippingAddress": "asdasd",
+  "shippingPhone": "123124"
+}
 
 
