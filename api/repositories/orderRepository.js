@@ -1,20 +1,33 @@
 const orderStatus = require("../enums/orderStatus");
-const {Order} = require("../models");
+const { Order, OrderItem, OrderServiceItem } = require("../models");
 
-const createOrder = (orderData, transaction) => {
-  return Order.create(orderData, { transaction });
-};
+const getUserOrders = (userId) => Order.findAll({ where: { user_id: userId } });
 
-const updateOrderStatus = (orderData, transaction) => {
-  return Order.update(
+const getOrderDetail = (orderId) =>
+  Order.findByPk(orderId, {
+    include: [
+      {
+        model: OrderItem,
+        as: "orderItems",
+        include: [{ model: OrderServiceItem, as: "serviceItems" }],
+      },
+    ],
+  });
+
+const createOrder = (orderData, transaction) =>
+  Order.create(orderData, { transaction });
+
+const updateOrderStatus = (orderData, transaction) =>
+  Order.update(
     { order_status: orderData.newStatus },
-    { where: { order_id: orderData.orderId } , transaction}
+    { where: { order_id: orderData.orderId }, transaction }
   );
-};
 
 const orderRepository = {
   createOrder,
-  updateOrderStatus
-}
+  updateOrderStatus,
+  getUserOrders,
+  getOrderDetail
+};
 
 module.exports = orderRepository;

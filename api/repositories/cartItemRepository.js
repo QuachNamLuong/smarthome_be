@@ -1,4 +1,4 @@
-const { CartItem } = require("../models");
+const { CartItem, CartServiceItem } = require("../models");
 
 const findById = (cartItemId) => {
   return CartItem.findByPk(cartItemId);
@@ -10,6 +10,14 @@ const findAllByCartId = (cartId) => {
   });
 };
 
+const getCartItemsWithServicesByCartId = (cartId, transaction) =>
+  CartItem.findAll({
+    where: { cart_id: cartId },
+    include: [{ model: CartServiceItem, as: "serviceItems" }],
+    transaction,
+    lock: transaction.LOCK.UPDATE
+  });
+
 const deleteAllByCartId = (cartId, transaction) => {
   return CartItem.destroy({ where: { cart_id: cartId }, transaction });
 };
@@ -17,7 +25,8 @@ const deleteAllByCartId = (cartId, transaction) => {
 const cartItemRepository = {
   findById,
   findAllByCartId,
-  deleteAllByCartId
+  deleteAllByCartId,
+  getCartItemsWithServicesByCartId
 };
 
 module.exports = cartItemRepository;

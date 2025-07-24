@@ -27,6 +27,9 @@ const decreaseStockQuantity = async (variantId, quantityToReduce, passedTransact
     }
 
     const newStockQuantity = variant.stock_quantity - quantityToReduce;
+    
+    variant.save({transaction});
+
     const updated = await productVariantRepository.updateStock(
       variant,
       newStockQuantity,

@@ -1,6 +1,5 @@
+const { Sequelize } = require("sequelize");
 const dbConfig = require("../config/db.config.js");
-
-const Sequelize = require("sequelize");
 
 const sequelize = new Sequelize(dbConfig.DB, dbConfig.USER, dbConfig.PASSWORD, {
   host: dbConfig.HOST,
@@ -51,6 +50,49 @@ db.CartItem = require("./CartItem.js")(sequelize, Sequelize);
 db.CartServiceItem = require("./CartServiceItem.js")(sequelize, Sequelize);
 db.OrderServiceItem = require("./OrderServiceItem.js")(sequelize, Sequelize);
 //
+
+//
+db.Cart.hasMany(db.CartItem, {
+  foreignKey: "cart_id",
+  as: "cartItems",
+  onDelete: "CASCADE", 
+});
+
+db.CartItem.belongsTo(db.Cart, {
+  foreignKey: "cart_id",
+});
+
+db.CartItem.hasMany(db.CartServiceItem, {
+  foreignKey: "cartitem_id",
+  as: "serviceItems",
+  onDelete: "CASCADE", 
+});
+
+db.CartServiceItem.belongsTo(db.CartItem, {
+  foreignKey: "cartitem_id",
+});
+
+db.Order.hasMany(db.OrderItem, {
+  foreignKey: "order_id",
+  as: "orderItems",
+  onDelete: "CASCADE", 
+});
+
+db.OrderItem.belongsTo(db.Order, {
+  foreignKey: "order_id",
+});
+
+db.OrderItem.hasMany(db.OrderServiceItem, {
+  foreignKey: "order_item_id",
+  as: "serviceItems",
+  onDelete: "CASCADE", 
+});
+
+db.OrderServiceItem.belongsTo(db.OrderItem, {
+  foreignKey: "order_item_id",
+});
+//
+
 db.Role.hasMany(db.User, {
   foreignKey: "role_id",
   as: "users",

@@ -15,8 +15,13 @@ const findByIdWithTransaction = (variantId, transaction) => {
 };
 
 const updateStock = (variant, newQuantity, transaction) => {
+  if (newQuantity < 0) throw new AppError("quantity can not be negatice", 400);
+
   variant.stock_quantity = newQuantity;
-  return variant.save({transaction});
+
+  if (newQuantity === 0) variant.item_status = "out_of_stock";
+  
+  return variant.save({ transaction });
 };
 
 const getProductVariantPrice = async (productVariantId) => {
@@ -29,7 +34,7 @@ const productVariantRepository = {
   findById,
   findByIdWithTransaction,
   updateStock,
-  getProductVariantPrice
+  getProductVariantPrice,
 };
 
 module.exports = productVariantRepository;

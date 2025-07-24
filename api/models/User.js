@@ -1,3 +1,10 @@
+/**
+ * Defines the User model representing the `users` table in the database.
+ *
+ * @param {import("sequelize").Sequelize} sequelize - The Sequelize instance.
+ * @param {typeof import("sequelize")} Sequelize - The Sequelize library with DataTypes.
+ * @returns {import("sequelize").Model} The Sequelize model for the `users` table.
+ */
 module.exports = (sequelize, Sequelize) => {
   const User = sequelize.define(
     "users",

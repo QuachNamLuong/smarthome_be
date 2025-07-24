@@ -1,24 +1,55 @@
 const cartItemRepository = require("../repositories/cartItemRepository");
-const cartServiceItemRepository = require("../repositories/cartServiceItemRepository");
 const cartRepository = require("../repositories/cartRepository");
-const orderItemRepository = require("../repositories/orderItemRepository");
 const orderRepository = require("../repositories/orderRepository");
-const packageServiceItemRepository = require("../repositories/packageServiceItemRepository");
-const productVariantRepository = require("../repositories/productVariantRepository");
 const AppError = require("../utils/AppError");
 const db = require("../models");
-const productVariantService = require("./productVariantService");
-const orderServiceItemRepository = require("../repositories/orderServiceItemRepository");
-const userRepository = require("../repositories/userService");
 const orderHelper = require("../helper/orderHelper");
+const userRepository = require("../repositories/userRepository");
+
+const getUserOrders = async (userId) => {
+  try {
+    const user = await userRepository.findById(userId);
+    if (!user) throw new AppError("User not found", 404);
+
+    return await orderRepository.getUserOrders(userId);
+  } catch(err) {
+    console.error(err);
+
+    if (err instanceof AppError) throw err;
+    throw new AppError("Can not get user orders", 500);
+  }
+};
+
+const getOrderDetail = async (orderId) => {
+  try {
+    const orderDetail = orderRepository.getOrderDetail(orderId);
+    if (!orderDetail) throw new AppError("Order not found", 404);
+
+    return orderDetail;
+  } catch(err) {
+    console.error(err);
+
+    if (err instanceof AppError) throw err;
+    throw new AppError("Can not get order detail", 500);
+  }
+}
 
 const createOrder = async (userId, cartId, shippingPhone, shippingAddress) => {
   let transaction;
   try {
     transaction = await db.sequelize.transaction();
-    var { user, cart } = await orderHelper.validateUserAndCart(userId, cartId);
-    const cartItems = await orderHelper.loadCartItemsWithServices(cartId);
-    const orderTotal = await orderHelper.calculateOrderTotal(cartItems);
+    const cart = await cartRepository.findById(cartId, transaction);
+    if (!cart) throw new AppError("Cart not found", 404);
+
+    const cartItemsWithServices =
+      await cartItemRepository.getCartItemsWithServicesByCartId(
+        cartId,
+        transaction
+      );
+
+    const orderTotal = await orderHelper.calculateOrderTotal(
+      cartItemsWithServices
+    );
     const newOrder = await orderRepository.createOrder(
       {
         user_id: userId,
@@ -28,8 +59,12 @@ const createOrder = async (userId, cartId, shippingPhone, shippingAddress) => {
       },
       transaction
     );
-    await orderHelper.createOrderItemsAndServices(cartItems, newOrder, transaction);
-    await orderHelper.cleanUpCart(cartItems, cartId, transaction);
+    await orderHelper.createOrderItemsAndServices(
+      cartItemsWithServices,
+      newOrder,
+      transaction
+    );
+    await cartRepository.deleteCartById(cartId, transaction);
     await transaction.commit();
     return newOrder;
   } catch (err) {
@@ -41,6 +76,8 @@ const createOrder = async (userId, cartId, shippingPhone, shippingAddress) => {
 
 const orderService = {
   createOrder,
+  getOrderDetail,
+  getUserOrders
 };
 
 module.exports = orderService;

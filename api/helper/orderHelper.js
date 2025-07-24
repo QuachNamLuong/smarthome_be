@@ -9,30 +9,19 @@ const AppError = require("../utils/AppError");
 const db = require("../models");
 const productVariantService = require("../services/productVariantService");
 const orderServiceItemRepository = require("../repositories/orderServiceItemRepository");
-const userRepository = require("../repositories/userService");
+const userRepository = require("../repositories/userRepository");
+const { User, Cart, CartItem } = require("../models");
+const { Transaction } = require("sequelize");
 
-const validateUserAndCart = async (userId, cartId) => {
+const validateUserAndCart = async (userId, cartId, transaction) => {
   const user = await userRepository.findById(userId);
   if (!user) throw new AppError("User not found", 404);
 
-  const cart = await cartRepository.findById(cartId);
+  const cart = await cartRepository.findById(cartId, transaction);
+
   if (!cart) throw new AppError(`Cart with id='${cartId}' not found`, 404);
 
-  return { user, cart };
-};
-
-const loadCartItemsWithServices = async (cartId) => {
-  const cartItems = await cartItemRepository.findAllByCartId(cartId);
-  if (cartItems.length === 0) throw new AppError("cart item is empty", 400);
-
-  for (const item of cartItems) {
-    item.serviceItems =
-      await cartServiceItemRepository.findAllServiceItemsByCartItemId(
-        item.cart_id
-      );
-  }
-
-  return cartItems;
+  return { cart };
 };
 
 const calculateProductTotal = async (cartItems) => {
@@ -122,7 +111,6 @@ const cleanUpCart = async (cartItems, cartId, transaction) => {
 
 const orderHelper = {
   validateUserAndCart,
-  loadCartItemsWithServices,
   calculateOrderTotal,
   createOrderItemsAndServices,
   cleanUpCart,
