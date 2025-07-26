@@ -1,0 +1,3 @@
+### get Cart detail
+GET http://localhost:8000/cart/detail/7
+Content-Type: application/json

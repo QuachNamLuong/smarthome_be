@@ -23,7 +23,7 @@ const decreaseStockQuantity = async (variantId, quantityToReduce, passedTransact
     }
 
     if (variant.stock_quantity < quantityToReduce) {
-      throw new AppError("Insufficient stock", 400);
+      throw new AppError("Hết hàng", 400);
     }
 
     const newStockQuantity = variant.stock_quantity - quantityToReduce;

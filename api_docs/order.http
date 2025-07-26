@@ -1,20 +1,38 @@
 ### get Order detail
-GET http://localhost:8000/order/test
+GET http://localhost:8000/order/detail/37
 Content-Type: application/json
 
 ### GEt User Orders
-GET http://localhost:8000/order/user/1
+GET http://localhost:8000/order/user/2
 Content-Type: application/json
 
 ### Create Order
-POST http://localhost:8000/order
+POST http://localhost:8000/order/vnpay
 Content-Type: application/json
 
 {
-  "userId": "1",
-  "cartId": "3",
+  "cartId": "7",
+  "shippingAddress": "asdasd",
+  "shippingPhone": "123124",
+  "ipAddress": "127.0.0.1"
+}
+
+###
+POST http://localhost:8000/order/cash-on-delivery
+Content-Type: application/json
+
+{
+  "cartId": "7",
   "shippingAddress": "asdasd",
   "shippingPhone": "123124"
 }
+
+###
+PUT http://localhost:8000/order/update-paid/56
+Content-Type: application/json
+
+###
+PUT http://localhost:8000/order/update-unpaid/56
+Content-Type: application/json
 
 

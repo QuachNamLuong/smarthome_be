@@ -15,6 +15,7 @@ const cors = require("cors");
 const morgan = require("morgan");
 const cartItemRepository = require("./repositories/cartItemRepository");
 const orderRouter = require("./routes/order");
+const cartRouter = require("./routes/cart");
 
 app.use(morgan("dev"));
 app.use(express.json());
@@ -29,5 +30,6 @@ app.use("/service-package", serviceRouter);
 app.use("/product", productRouter);
 app.use("/payment", paymentRouter);
 app.use("/order", orderRouter);
+app.use("/cart", cartRouter);
 
 module.exports = app;

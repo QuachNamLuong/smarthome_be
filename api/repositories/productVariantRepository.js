@@ -27,7 +27,7 @@ const updateStock = (variant, newQuantity, transaction) => {
 const getProductVariantPrice = async (productVariantId) => {
   const productVariant = await ProductVariant.findByPk(productVariantId);
   if (!productVariant) throw new AppError("product variant not found", 404);
-  return productVariant.price;
+  return Number(productVariant.price);
 };
 
 const productVariantRepository = {

@@ -1,26 +1,15 @@
-/**
- * Defines the CartServiceItem model representing the `cart_service_items` table in the database.
- *
- * @param {import("sequelize").Sequelize} sequelize - The Sequelize instance.
- * @param {typeof import("sequelize").DataTypes} DataTypes - The Sequelize DataTypes object.
- * @returns {import("sequelize").Model} The Sequelize model for the `cart_service_items` table.
- */
 module.exports = (sequelize, DataTypes) => {
-  const CartServiceItem = sequelize.define("CartServiceItem", {
+  const CartItemService = sequelize.define("CartServiceItem", {
     cart_item_service_id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
       autoIncrement: true
     },
-    cartitem_id: {
+    cart_item_id: {
       type: DataTypes.INTEGER,
       allowNull: false
     },
     package_service_item_id: {
-      type: DataTypes.INTEGER,
-      allowNull: true
-    },
-    service_id: {
       type: DataTypes.INTEGER,
       allowNull: true
     },
@@ -38,10 +27,10 @@ module.exports = (sequelize, DataTypes) => {
       onUpdate: sequelize.literal("CURRENT_TIMESTAMP")
     }
   }, {
-    tableName: "cart_service_items",
+    tableName: "cartitemservices",
     timestamps: false,
     underscored: true
   });
 
-  return CartServiceItem;
+  return CartItemService;
 };

@@ -1,27 +1,5 @@
 const vnpay = require("../lib/vnpay");
-const paymentService = require("../services/paymentService");
 const orderService = require("../services/orderService");
-const orderRepository = require("../repositories/orderRepository");
-
-const createVNPayPaymentUrl = async (req, res) => {
-  const { orderId, ipAddress } = req.body;
-
-  try {
-    const vnpayPaymentUrl = await paymentService.createVnPayUrl(
-      orderId,
-      ipAddress
-    );
-
-    const response = {
-      vnpayPaymentUrl,
-    };
-
-    return res.status(201).json(response);
-  } catch (err) {
-    console.error(err);
-    return res.status(400).json({ message: "create payment vnpay url fail" });
-  }
-};
 
 const checkPaymentVNPay = async (req, res) => {
   const queryParams = req.query;
@@ -52,6 +30,6 @@ const checkPaymentVNPay = async (req, res) => {
   }
 };
 
-const paymentController = { createVNPayPaymentUrl, checkPaymentVNPay };
+const paymentController = { checkPaymentVNPay };
 
 module.exports = paymentController;

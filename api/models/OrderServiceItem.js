@@ -1,22 +1,18 @@
 module.exports = (sequelize, Sequelize) => {
   const OrderServiceItem = sequelize.define(
-    "OrderItemService",
+    "OrderServiceItem",
     {
       order_item_service_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         primaryKey: true,
-        autoIncrement: false, // change to true if needed
+        autoIncrement: true, // change to true if needed
       },
       order_item_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
       package_service_item_id: {
-        type: Sequelize.INTEGER,
-        allowNull: true,
-      },
-      service_id: {
         type: Sequelize.INTEGER,
         allowNull: true,
       },
@@ -37,7 +33,7 @@ module.exports = (sequelize, Sequelize) => {
       },
     },
     {
-      tableName: "order_item_services",
+      tableName: "orderitemservices",
       timestamps: false,
       underscored: true,
     }

@@ -47,14 +47,14 @@ db.Order = require("./Order.js")(sequelize, Sequelize);
 db.OrderItem = require("./OrderItem.js")(sequelize, Sequelize);
 db.Cart = require("./Cart.js")(sequelize, Sequelize);
 db.CartItem = require("./CartItem.js")(sequelize, Sequelize);
-db.CartServiceItem = require("./CartServiceItem.js")(sequelize, Sequelize);
+db.CartItemService = require("./CartItemService.js")(sequelize, Sequelize);
 db.OrderServiceItem = require("./OrderServiceItem.js")(sequelize, Sequelize);
 //
 
-//
+// Custome
 db.Cart.hasMany(db.CartItem, {
   foreignKey: "cart_id",
-  as: "cartItems",
+  as: "items",
   onDelete: "CASCADE", 
 });
 
@@ -62,19 +62,29 @@ db.CartItem.belongsTo(db.Cart, {
   foreignKey: "cart_id",
 });
 
-db.CartItem.hasMany(db.CartServiceItem, {
-  foreignKey: "cartitem_id",
-  as: "serviceItems",
+db.CartItem.hasMany(db.CartItemService, {
+  foreignKey: "cart_item_id",
+  as: "services",
   onDelete: "CASCADE", 
 });
 
-db.CartServiceItem.belongsTo(db.CartItem, {
-  foreignKey: "cartitem_id",
+db.CartItemService.belongsTo(db.CartItem, {
+  foreignKey: "cart_item_id",
 });
+
+db.ProductVariant.hasMany(db.CartItem, {
+  foreignKey: "variant_id",
+  as: "cartItems"
+})
+
+db.CartItem.belongsTo(db.ProductVariant, {
+  foreignKey: "variant_id",
+  as: "product"
+})
 
 db.Order.hasMany(db.OrderItem, {
   foreignKey: "order_id",
-  as: "orderItems",
+  as: "items",
   onDelete: "CASCADE", 
 });
 
@@ -84,14 +94,14 @@ db.OrderItem.belongsTo(db.Order, {
 
 db.OrderItem.hasMany(db.OrderServiceItem, {
   foreignKey: "order_item_id",
-  as: "serviceItems",
+  as: "services",
   onDelete: "CASCADE", 
 });
 
 db.OrderServiceItem.belongsTo(db.OrderItem, {
   foreignKey: "order_item_id",
 });
-//
+// Custome
 
 db.Role.hasMany(db.User, {
   foreignKey: "role_id",
